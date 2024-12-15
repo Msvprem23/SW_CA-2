@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Item</title>
+</head>
+<body>
+    <h1>Edit Item</h1>
+
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Edit Form -->
+    <form method="POST" action="/edit_item/{{ item.id }}">
+        <!-- CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <!-- Name Field -->
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" value="{{ item.name }}" required maxlength="100"><br><br>
+
+        <!-- Description Field -->
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" maxlength="200">{{ item.description }}</textarea><br><br>
+
+        <!-- Submit Button -->
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <!-- Navigation -->
+    <p><a href="/admin">Back to Admin Dashboard</a></p>
+</body>
+</html>

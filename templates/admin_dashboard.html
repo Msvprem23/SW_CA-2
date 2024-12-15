@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Item List -->
+    <h2>Items</h2>
+    <ul>
+        {% for item in items %}
+            <li>
+                {{ item.name }} - {{ item.description }}
+                <a href="/edit_item/{{ item.id }}">Edit</a>
+                <!-- Use a form for deletion to improve security -->
+                <form method="POST" action="/delete_item/{{ item.id }}" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Add Item Form -->
+    <h3>Add New Item</h3>
+    <form method="POST" action="/add_item">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required maxlength="100"><br><br>
+
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" maxlength="200"></textarea><br><br>
+
+        <button type="submit">Add Item</button>
+    </form>
+
+    <!-- File Upload Form -->
+    <h3>Upload File</h3>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label for="file">Choose file:</label><br>
+        <input type="file" id="file" name="file" required accept=".jpg,.jpeg,.png,.pdf"><br><br>
+        <button type="submit">Upload File</button>
+    </form>
+
+    <!-- Navigation -->
+    <p><a href="/logout">Logout</a></p>
+</body>
+</html>

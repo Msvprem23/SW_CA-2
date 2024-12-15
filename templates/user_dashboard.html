@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+            margin-top: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Dashboard</h1>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Items List -->
+    <h2>Items</h2>
+    <ul>
+        {% for item in items %}
+            <li>{{ item.name or 'Unnamed Item' }} - {{ item.description or 'No description available' }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Add New Item Form -->
+    <h2>Add New Item</h2>
+    <form action="/add_item" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <label for="name">Name (optional):</label><br>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="description">Description (optional):</label><br>
+        <textarea id="description" name="description"></textarea><br><br>
+
+        <label for="file">Upload File (optional):</label><br>
+        <input type="file" id="file" name="file" accept=".jpg,.jpeg,.png,.pdf"><br><br>
+
+        <button type="submit">Add Item</button>
+    </form>
+
+    <!-- Logout Link -->
+    <p><a href="/logout">Logout</a></p>
+</body>
+</html>

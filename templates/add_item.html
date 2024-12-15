@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Item</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        form {
+            width: 300px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add New Item</h1>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/add_item" enctype="multipart/form-data">
+        <!-- Mandatory Fields -->
+        <label for="name">Name (required):</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="description">Description (required):</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+
+        <!-- Optional File Upload -->
+        <label for="file">Upload File (optional):</label>
+        <input type="file" id="file" name="file" accept=".jpg,.jpeg,.png,.pdf">
+
+        <!-- Submit Button -->
+        <button type="submit">Add Item</button>
+    </form>
+
+    <p><a href="/admin">Back to Admin Dashboard</a></p>
+</body>
+</html>
